@@ -11,16 +11,26 @@ function App() {
 
     const [deger, setDeger] = useState([]);
 
-    const getOnChange = (e) => {
-        setDeger(e.target.value);
-    }
 
     const getOnKeyPress = (e) => {
         if (e.key === "Enter") {
-            localStorage.setItem("todos", JSON.stringify(deger));
+            const todos = callBackStorage();
+            todos.push(deger);
+            localStorage.setItem("todos", JSON.stringify(todos));
+            setDeger("");
         }
     }
 
+   const callBackStorage = () => {
+        let todos;
+
+        if (localStorage.getItem("todos") === null) {
+            todos = [];
+        } else {
+            todos = JSON.parse(localStorage.getItem("todos"));
+        }
+        return todos;
+    }
 
     return (
 
@@ -35,7 +45,9 @@ function App() {
 
                 <input type="text" className="d-flex" placeholder="Veri Girişi Yapınız"
                     value={deger}
-                    onChange={getOnChange}
+                    onChange={
+                        (e) => setDeger(e.target.value)
+                    }
                     onKeyPress={getOnKeyPress}
                     style={
                         {
