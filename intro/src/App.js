@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function App() {
     const myStyle = {
@@ -10,7 +10,12 @@ function App() {
     }
 
     const [deger, setDeger] = useState([]);
+    const [value, setValue] = useState([]);
 
+    useEffect(() => {
+        let todos = localStorage.getItem("todos");
+        setValue(JSON.parse(todos));
+    },[])
 
     const getOnKeyPress = (e) => {
         if (e.key === "Enter") {
@@ -21,7 +26,7 @@ function App() {
         }
     }
 
-   const callBackStorage = () => {
+    const callBackStorage = () => {
         let todos;
 
         if (localStorage.getItem("todos") === null) {
@@ -55,18 +60,23 @@ function App() {
                             height: "40px"
                         }
                     }/>
+                <div> {
+                    value.map((val,index) => (
+                        <div style={myStyle} key={index}>
+                            <input type="checkbox"
+                                style={
+                                    {
+                                        width: "18px",
+                                        height: "18px"
+                                    }
+                                }
+                                className="d-inline ml-2 mr-2"/>
+                            <p className="mt-3">
+                                {val}</p>
+                        </div>
+                    ))
+                } </div>
 
-                <div style={myStyle}>
-                    <input type="checkbox"
-                        style={
-                            {
-                                width: "18px",
-                                height: "18px"
-                            }
-                        }
-                        className="d-inline ml-2 mr-2"/>
-                    <p className="mt-3">lorem optos todos</p>
-                </div>
             </div>
         </div>
     )
